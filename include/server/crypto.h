@@ -13,6 +13,10 @@ class CRYPTO {
 	public:
 		CRYPTO ();
 		~CRYPTO ();
+		CRYPTO& operator = (CRYPTO &ci);
+		std::string& getPK ();
+		std::string& getSK ();
+		std::string& getNonce ();
 	private:
 		std::string pk;
 		std::string sk;

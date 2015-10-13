@@ -26,3 +26,29 @@ CRYPTO::~CRYPTO()
 {
 
 }
+
+CRYPTO& CRYPTO::operator = (CRYPTO &ci)
+{
+	if(this != &ci){
+		pk = ci.getPK();
+		sk = ci.getSK();
+		n = ci.getNonce();
+	}
+
+	return *this;
+}
+
+std::string& CRYPTO::getPK ()
+{
+	return this->pk;
+}
+
+std::string& CRYPTO::getSK ()
+{
+	return this->sk;
+}
+
+std::string& CRYPTO::getNonce ()
+{
+	return this->n;
+}

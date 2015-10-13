@@ -7,7 +7,7 @@ EXE = ${LINUX_EXE}
 all : ${EXE}
 
 ${EXE}: main.o server.o mesaj.o client.o crypto.o
-	${CPPC} main.o server.o mesaj.o client.o crypto.o /usr/lib/randombytes.o -o ${EXE} ${LDLIBS}
+	${CPPC} main.o server.o mesaj.o client.o crypto.o /usr/lib64/randombytes.o -o ${EXE} ${LDLIBS}
 
 main.o: main.cpp ${HYPERION_INCL_DIR}/server.h
 	${CPPC} main.cpp ${CPPFLAGS} -c -o $@
