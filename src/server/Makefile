@@ -12,7 +12,7 @@ ${EXE}: main.o server.o mesaj.o client.o crypto.o
 main.o: main.cpp ${HYPERION_INCL_DIR}/server.h
 	${CPPC} main.cpp ${CPPFLAGS} -c -o $@
 
-server.o: server.cpp ${HYPERION_INCL_DIR}/server.h ${HYPERION_INCL_DIR}/mesaj.h ${HYPERION_INCL_DIR}/crypto.h
+server.o: server.cpp ${HYPERION_INCL_DIR}/server.h ${HYPERION_INCL_DIR}/mesaj.h ${HYPERION_INCL_DIR}/crypto.h ${HYPERION_INCL_DIR}/client.h
 	${CPPC} server.cpp $(CPPFLAGS) -c -o $@
 
 mesaj.o: mesaj.cpp ${HYPERION_INCL_DIR}/mesaj.h
