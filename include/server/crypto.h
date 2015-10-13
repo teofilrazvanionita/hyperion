@@ -5,6 +5,7 @@
 
 #include <string>
 
+
 class CRYPTO {
 	public:
 		CRYPTO ();
@@ -13,6 +14,6 @@ class CRYPTO {
 		std::string pk;
 		std::string sk;
 		std::string n;
-}
+};
 
 #endif

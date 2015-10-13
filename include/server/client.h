@@ -10,6 +10,6 @@ class CLIENT {
 	private:
 		CRYPTO cryptinfo;
 		int sockfd;
-}
+};
 
 #endif

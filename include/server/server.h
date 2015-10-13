@@ -13,6 +13,6 @@ class SERVER {
 		CRYPTO cryptinfo;
 		int sockfd;
 		std::list<MESAJ> listamesaje;
-}
+};
 
 #endif

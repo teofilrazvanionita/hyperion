@@ -3,13 +3,14 @@
 
 #include <string>
 
+
 class MESAJ {
 	public:
-		MEASAJ();
+		MESAJ();
 		~MESAJ();
 	private:
 		std::string name;
 		std::string comment;
-}
+};
 
 #endif
