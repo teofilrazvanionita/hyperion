@@ -5,8 +5,10 @@
 
 class CLIENT {
 	public:
-		CLIENT();
-		~CLIENT();
+		CLIENT ();
+		~CLIENT ();
+		bool setCryptInfo (CRYPTO &ci);
+		bool setSockFd (int &sfd);
 	private:
 		CRYPTO cryptinfo;
 		int sockfd;
