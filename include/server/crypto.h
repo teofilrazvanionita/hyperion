@@ -5,7 +5,9 @@
 
 
 #include <string>
-
+#include <random>
+#include <algorithm>
+#include <iterator>
 
 class CRYPTO {
 	public:
