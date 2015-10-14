@@ -26,13 +26,13 @@ CLIENT::CLIENT (CRYPTO &ci, int &sfd)
 	sockfd = sfd;
 }
 
-bool CLIENT::setCryptInfo (CRYPTO &ci)
+bool CLIENT::setCI (CRYPTO &ci)
 {
 	cryptinfo = ci;
 	return true;
 }
 
-bool CLIENT::setSockFd (int &sfd)
+bool CLIENT::setSFD (int &sfd)
 {
 	sockfd = sfd;
 	return true;

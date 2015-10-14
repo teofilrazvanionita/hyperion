@@ -8,8 +8,8 @@ class CLIENT {
 		CLIENT ();
 		~CLIENT ();
 		CLIENT (CRYPTO &ci, int &sfd);	// parameters constructor
-		bool setCryptInfo (CRYPTO &ci);
-		bool setSockFd (int &sfd);
+		bool setCI (CRYPTO &ci);
+		bool setSFD (int &sfd);
 		CLIENT& operator = (CLIENT &c);	// assignment operator
 		CRYPTO& getCI ();
 		int& getSFD ();
