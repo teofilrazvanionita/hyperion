@@ -14,6 +14,8 @@ class SERVER {
 		bool addClient (CLIENT &c);
 		std::string decryptMSG (std::string &msg, CLIENT &sender);
 		std::string encryptMSG (std::string &msg, CLIENT &receiver);
+		bool sendMessage (std::string &msg, CLIENT &sender);	// send message string to the client list
+		bool sendMsgToClient (std::string msg, CLIENT &receiver);	// send message to the client
 	private:
 		CRYPTO cryptinfo;
 		int sockfd;

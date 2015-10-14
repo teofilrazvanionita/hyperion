@@ -18,6 +18,8 @@ class CRYPTO {
 		std::string& getSK ();
 		std::string& getNonce ();
 		CRYPTO (CRYPTO &ci);		// copy constructor
+		bool operator == (CRYPTO &ci);
+		bool operator != (CRYPTO &ci);
 	private:
 		std::string pk;
 		std::string sk;

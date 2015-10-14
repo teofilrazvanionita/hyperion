@@ -39,6 +39,22 @@ CRYPTO& CRYPTO::operator = (CRYPTO &ci)
 	return *this;
 }
 
+bool CRYPTO::operator == (CRYPTO &ci)
+{
+	if(this != &ci){
+		if((pk == ci.getPK()) && (sk == ci.getSK()) && (n == ci.getNonce()))
+			return true;
+		else
+			return false;
+	}
+
+	return true;
+}
+
+bool CRYPTO::operator != (CRYPTO &ci){
+	return !(*this == ci);
+}
+
 std::string& CRYPTO::getPK ()
 {
 	return this->pk;

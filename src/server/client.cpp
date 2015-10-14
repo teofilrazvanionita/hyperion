@@ -48,6 +48,22 @@ CLIENT& CLIENT::operator = (CLIENT &c)
 	return *this;
 }
 
+bool CLIENT:: operator == (CLIENT &c){
+	
+	if(this != &c){
+		if ((cryptinfo == c.getCI()) && (sockfd == c.getSFD()))
+			return true;
+	}else
+		return true;
+
+	return false;
+}
+
+bool CLIENT::operator != (CLIENT &c)
+{
+	return !(*this == c);
+}
+
 CRYPTO& CLIENT::getCI ()
 {
 	return cryptinfo;
