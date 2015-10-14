@@ -12,6 +12,8 @@ class SERVER {
 		~SERVER ();
 		bool addMessage (MESAJ &m);
 		bool addClient (CLIENT &c);
+		std::string& decryptMSG (std::string &msg, CLIENT &client);
+		std::string& encryptMSG (std::string &msg);
 	private:
 		CRYPTO cryptinfo;
 		int sockfd;

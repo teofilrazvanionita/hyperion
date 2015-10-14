@@ -7,6 +7,7 @@ class CLIENT {
 	public:
 		CLIENT ();
 		~CLIENT ();
+		CLIENT (CRYPTO &ci, int &sfd);	// parameters constructor
 		bool setCryptInfo (CRYPTO &ci);
 		bool setSockFd (int &sfd);
 		CLIENT& operator = (CLIENT &c);	// assignment operator

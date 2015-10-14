@@ -1,13 +1,29 @@
 #include "client.h"
 
-CLIENT::CLIENT()
+// default contructor
+CLIENT::CLIENT ()
 {
 
 }
 
+// destructor
 CLIENT::~CLIENT()
 {
 
+}
+
+// copy constructor
+CLIENT::CLIENT (CLIENT &c)
+{
+	cryptinfo = c.getCI();
+	sockfd = c.getSFD();
+}
+
+// parameters constructor
+CLIENT::CLIENT (CRYPTO &ci, int &sfd)
+{
+	cryptinfo = ci;
+	sockfd = sfd;
 }
 
 bool CLIENT::setCryptInfo (CRYPTO &ci)
@@ -42,9 +58,4 @@ int& CLIENT::getSFD ()
 	return sockfd;
 }
 
-// constructorul de copiere
-CLIENT::CLIENT(CLIENT &c)
-{
-	cryptinfo = c.getCI();
-	sockfd = c.getSFD();
-}
+
