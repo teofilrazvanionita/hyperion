@@ -27,6 +27,7 @@ CRYPTO::~CRYPTO()
 
 }
 
+// assignment operator
 CRYPTO& CRYPTO::operator = (CRYPTO &ci)
 {
 	if(this != &ci){
@@ -51,4 +52,12 @@ std::string& CRYPTO::getSK ()
 std::string& CRYPTO::getNonce ()
 {
 	return this->n;
+}
+
+// copy constructor
+CRYPTO::CRYPTO (CRYPTO &ci)
+{
+	pk = ci.getPK();
+	sk = ci.getSK();
+	n = ci.getNonce();
 }

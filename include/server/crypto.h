@@ -13,10 +13,11 @@ class CRYPTO {
 	public:
 		CRYPTO ();
 		~CRYPTO ();
-		CRYPTO& operator = (CRYPTO &ci);
+		CRYPTO& operator = (CRYPTO &ci);	// assignment operator
 		std::string& getPK ();
 		std::string& getSK ();
 		std::string& getNonce ();
+		CRYPTO (CRYPTO &ci);		// copy constructor
 	private:
 		std::string pk;
 		std::string sk;
