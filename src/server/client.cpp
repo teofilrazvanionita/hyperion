@@ -17,6 +17,7 @@ CLIENT::CLIENT (const CLIENT &c)
 {
 	cryptinfo = ((CLIENT &)c).getCI();
 	sockfd = ((CLIENT &)c).getSFD();
+        nume = ((CLIENT &)c).getNume();
 }
 
 // parameters constructor
@@ -44,6 +45,7 @@ CLIENT& CLIENT::operator = (const CLIENT &c)
 	if (this != &c){
 		cryptinfo = ((CLIENT &)c).getCI();
 		sockfd = ((CLIENT &)c).getSFD();
+                nume = ((CLIENT &)c).getNume();
 	}
 
 	return *this;
