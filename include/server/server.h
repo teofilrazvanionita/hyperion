@@ -8,6 +8,7 @@
 #include "crypto.h"
 #include "client.h"
 
+
 class SERVER {
 	public:
 		SERVER ();
@@ -22,6 +23,7 @@ class SERVER {
                 bool verifyName (std::string &nume);
                 void mtxLock ();    // locks mutex
                 void mtxUnlock ();  // unlocks mutex
+                void Play ();
 	private:
 		CRYPTO cryptinfo;
 		int sockfd;

@@ -10,8 +10,9 @@ CPPFLAGS = -g -I${HYPERION_INCL_DIR} \
 	   -Wall \
 	   -Wno-sign-compare \
 	   -Wno-unused-parameter \
-	   -Wextra
+	   -Wextra \
+    
 
-LDLIBS = -lnacl
+LDLIBS = -lnacl -lpthread
 
 RM = rm -f

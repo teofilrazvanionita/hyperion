@@ -85,6 +85,12 @@ void SERVER::mtxUnlock ()
         mtx.unlock();
 }
 
+void SERVER::Play ()
+{
+        std::thread thd (client_Communication, this, 1);
+        thd.join();
+}
+
 // do all the communication with the clients in this thread function
 void client_Communication (SERVER *server_p, int sockfd)
 {
