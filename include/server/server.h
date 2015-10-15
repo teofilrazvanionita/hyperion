@@ -17,6 +17,7 @@ class SERVER {
 		bool sendMessage (std::string &msg, CLIENT &sender);	// send message string to the client list
 		bool sendMsgToClient (std::string &msg, CLIENT &receiver);	// send message to the client
                 bool sendMessageList (CLIENT &receiver);
+                bool verifyName (std::string &nume);
 	private:
 		CRYPTO cryptinfo;
 		int sockfd;

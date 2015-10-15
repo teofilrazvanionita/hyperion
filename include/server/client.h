@@ -13,6 +13,7 @@ class CLIENT {
 		CLIENT& operator = (CLIENT &c);	// assignment operator
 		CRYPTO& getCI ();
 		int& getSFD ();
+                std::string& getNume ();
 		CLIENT (const CLIENT &c);	// copy constructor
 		bool operator == (CLIENT &c);
 		bool operator != (CLIENT &c);

@@ -74,4 +74,8 @@ int& CLIENT::getSFD ()
 	return sockfd;
 }
 
+std::string& CLIENT::getNume ()
+{
+	return nume;
+}
 
