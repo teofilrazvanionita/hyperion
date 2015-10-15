@@ -28,21 +28,21 @@ CRYPTO::~CRYPTO()
 }
 
 // assignment operator
-CRYPTO& CRYPTO::operator = (CRYPTO &ci)
+CRYPTO& CRYPTO::operator = (const CRYPTO &ci)
 {
 	if(this != &ci){
-		pk = ci.getPK();
-		sk = ci.getSK();
-		n = ci.getNonce();
+		pk = ((CRYPTO &)ci).getPK();
+		sk = ((CRYPTO &)ci).getSK();
+		n = ((CRYPTO &)ci).getNonce();
 	}
 
 	return *this;
 }
 
-bool CRYPTO::operator == (CRYPTO &ci)
+bool CRYPTO::operator == (const CRYPTO &ci)
 {
 	if(this != &ci){
-		if((pk == ci.getPK()) && (sk == ci.getSK()) && (n == ci.getNonce()))
+		if((pk == ((CRYPTO &)ci).getPK()) && (sk == ((CRYPTO &)ci).getSK()) && (n == ((CRYPTO &)ci).getNonce()))
 			return true;
 		else
 			return false;
@@ -51,7 +51,7 @@ bool CRYPTO::operator == (CRYPTO &ci)
 	return true;
 }
 
-bool CRYPTO::operator != (CRYPTO &ci){
+bool CRYPTO::operator != (const CRYPTO &ci){
 	return !(*this == ci);
 }
 
@@ -71,9 +71,9 @@ std::string& CRYPTO::getNonce ()
 }
 
 // copy constructor
-CRYPTO::CRYPTO (CRYPTO &ci)
+CRYPTO::CRYPTO (const CRYPTO &ci)
 {
-	pk = ci.getPK();
-	sk = ci.getSK();
-	n = ci.getNonce();
+	pk = ((CRYPTO &)ci).getPK();
+	sk = ((CRYPTO &)ci).getSK();
+	n = ((CRYPTO &)ci).getNonce();
 }

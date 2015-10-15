@@ -38,11 +38,12 @@ bool CLIENT::setSFD (int &sfd)
 	return true;
 }
 
-CLIENT& CLIENT::operator = (CLIENT &c)
+// assignment operator
+CLIENT& CLIENT::operator = (const CLIENT &c)
 {
 	if (this != &c){
-		cryptinfo = c.getCI();
-		sockfd = c.getSFD();
+		cryptinfo = ((CLIENT &)c).getCI();
+		sockfd = ((CLIENT &)c).getSFD();
 	}
 
 	return *this;

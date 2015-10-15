@@ -61,9 +61,9 @@ bool SERVER::sendMessageList (CLIENT &receiver)
         for(std::list<MESAJ>::iterator it = listamesaje.begin(); it != listamesaje.end(); it++){
                sendMsgToClient ((*it).getName(), receiver);
                sendMsgToClient ((*it).getComment(), receiver);
-        
-               return true;
         }
+        
+        return true;
 }
 
 bool SERVER::verifyName (std::string &nume)
