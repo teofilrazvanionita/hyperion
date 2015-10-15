@@ -42,7 +42,7 @@ CRYPTO& CRYPTO::operator = (const CRYPTO &ci)
 bool CRYPTO::operator == (const CRYPTO &ci)
 {
 	if(this != &ci){
-		if((pk == ((CRYPTO &)ci).getPK()) && (sk == ((CRYPTO &)ci).getSK()) && (n == ((CRYPTO &)ci).getNonce()))
+                if((pk.compare(((CRYPTO &)ci).getPK()) == 0) && (sk.compare(((CRYPTO &)ci).getSK()) == 0) && (n.compare(((CRYPTO &)ci).getNonce()) == 0))
 			return true;
 		else
 			return false;
