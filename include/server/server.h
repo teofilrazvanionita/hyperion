@@ -2,6 +2,8 @@
 #define __SERVER_H
 
 #include <list>
+#include <thread>
+#include <mutex>
 #include "mesaj.h"
 #include "crypto.h"
 #include "client.h"
@@ -18,11 +20,16 @@ class SERVER {
 		bool sendMsgToClient (std::string &msg, CLIENT &receiver);	// send message to the client
                 bool sendMessageList (CLIENT &receiver);
                 bool verifyName (std::string &nume);
+                void mtxLock ();    // locks mutex
+                void mtxUnlock ();  // unlocks mutex
 	private:
 		CRYPTO cryptinfo;
 		int sockfd;
 		std::list<MESAJ> listamesaje;
 		std::list<CLIENT> listaclienti;
+                std::mutex mtx;     // mutex to syncronize the created threads' operations
 };
+
+void client_Communication (SERVER *server_p, int sockfd);
 
 #endif

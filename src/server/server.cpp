@@ -74,3 +74,20 @@ bool SERVER::verifyName (std::string &nume)
         }
         return true;
 }
+
+void SERVER::mtxLock ()
+{
+        mtx.lock();
+}
+
+void SERVER::mtxUnlock ()
+{
+        mtx.unlock();
+}
+
+// do all the communication with the clients in this thread function
+void client_Communication (SERVER *server_p, int sockfd)
+{
+        server_p->mtxLock();
+        server_p->mtxUnlock();
+}
