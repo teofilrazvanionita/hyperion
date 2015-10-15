@@ -13,10 +13,10 @@ CLIENT::~CLIENT()
 }
 
 // copy constructor
-CLIENT::CLIENT (CLIENT &c)
+CLIENT::CLIENT (const CLIENT &c)
 {
-	cryptinfo = c.getCI();
-	sockfd = c.getSFD();
+	cryptinfo = ((CLIENT &)c).getCI();
+	sockfd = ((CLIENT &)c).getSFD();
 }
 
 // parameters constructor

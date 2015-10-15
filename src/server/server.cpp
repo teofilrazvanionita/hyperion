@@ -12,12 +12,14 @@ SERVER::~SERVER ()
 
 bool SERVER::addMessage (MESAJ &m)
 {
-	return false;
+	listamesaje.push_back(m);
+	return true;
 }
 
 bool SERVER::addClient (CLIENT &c)
 {
-	return false;
+	listaclienti.push_back(c);
+	return true;
 }
 
 std::string SERVER::decryptMSG (std::string &msg, CLIENT &sender)
