@@ -51,7 +51,17 @@ bool SERVER::sendMessage (std::string &msg, CLIENT &sender)
 	return true;
 }
 
-bool SERVER::sendMsgToClient (std::string msg, CLIENT &receiver)
+bool SERVER::sendMsgToClient (std::string &msg, CLIENT &receiver)
 {
 	return true;
+}
+
+bool SERVER::sendMessageList (CLIENT &receiver)
+{
+    for(std::list<MESAJ>::iterator it = listamesaje.begin(); it != listamesaje.end(); it++){
+        sendMsgToClient ((*it).getName(), receiver);
+        sendMsgToClient ((*it).getComment(), receiver);
+        
+        return true;
+    }
 }

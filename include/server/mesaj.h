@@ -6,8 +6,11 @@
 
 class MESAJ {
 	public:
-		MESAJ();
-		~MESAJ();
+		MESAJ ();
+		~MESAJ ();
+                MESAJ (const MESAJ& mesaj); // copy constructor
+                std::string& getName ();
+                std::string& getComment ();
 	private:
 		std::string name;
 		std::string comment;
