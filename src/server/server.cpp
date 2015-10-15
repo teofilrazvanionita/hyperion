@@ -87,8 +87,7 @@ void SERVER::mtxUnlock ()
 
 void SERVER::Play ()
 {
-        std::thread thd (client_Communication, this, 1);
-        thd.join();
+        std::thread (client_Communication, this, 1).detach();
 }
 
 // do all the communication with the clients in this thread function
