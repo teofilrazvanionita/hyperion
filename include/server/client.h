@@ -18,6 +18,7 @@ class CLIENT {
 		bool operator != (CLIENT &c);
 	private:
 		CRYPTO cryptinfo;
+		std::string nume;
 		int sockfd;
 };
 
