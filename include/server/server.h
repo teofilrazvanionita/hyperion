@@ -17,11 +17,19 @@ extern "C"
     
 #include <unistd.h>
 #include <stdlib.h>
-
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <stdio.h>
+#include <string.h>
+    
 #ifdef __cplusplus
 }
 #endif
 
+
+#define PORT "5000"  // the port users will be connecting to
+#define BACKLOG 100   // how many pending connections queue will hold
 
 class SERVER {
 	public:
