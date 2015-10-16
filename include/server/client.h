@@ -7,7 +7,7 @@ class CLIENT {
 	public:
 		CLIENT ();
 		~CLIENT ();
-		CLIENT (CRYPTO &ci, int &sfd);	// parameters constructor
+		CLIENT (CRYPTO &ci, int &sfd, std::string &name);	// parameters constructor
 		bool setCI (CRYPTO &ci);
 		bool setSFD (int &sfd);
 		CLIENT& operator = (const CLIENT &c);	// assignment operator

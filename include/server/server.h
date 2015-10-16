@@ -19,7 +19,7 @@ class SERVER {
                 std::string decryptMSG (std::string &msg, std::string &pk, std::string &nonce);
 		std::string encryptMSG (std::string &msg, CLIENT &receiver);
 		bool sendMessage (std::string &msg, CLIENT &sender);	// send message string to the client list
-		bool sendMsgToClient (std::string &msg, CLIENT &receiver);	// send message to the client
+		bool sendMsgToClient (std::string &msg, CLIENT &receiver, bool sendendl);	// send message to the client
                 bool sendMessageList (CLIENT &receiver);
                 bool verifyName (std::string &nume);
                 void mtxLock ();    // locks mutex

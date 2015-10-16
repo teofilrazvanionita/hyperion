@@ -51,15 +51,15 @@ bool SERVER::sendMessage (std::string &msg, CLIENT &sender)
 		if(*it != sender){
 			std::string c = encryptMSG (m, *it);
                         std::string cname = encryptMSG (sender.getNume(), *it);
-                        sendMsgToClient (cname, *it);
-			sendMsgToClient (c, *it);
+                        sendMsgToClient (cname, *it, false);
+			sendMsgToClient (c, *it, true);
 		}
 	}
 
 	return true;
 }
 
-bool SERVER::sendMsgToClient (std::string &msg, CLIENT &receiver)
+bool SERVER::sendMsgToClient (std::string &msg, CLIENT &receiver, bool sendendl)
 {
 	return true;
 }
@@ -69,8 +69,8 @@ bool SERVER::sendMessageList (CLIENT &receiver)
         for(std::list<MESAJ>::iterator it = listamesaje.begin(); it != listamesaje.end(); it++){
                std::string cname = encryptMSG ((*it).getName(), receiver);
                std::string enc_comment = encryptMSG ((*it).getComment(), receiver);
-               sendMsgToClient (cname, receiver);
-               sendMsgToClient (enc_comment, receiver);
+               sendMsgToClient (cname, receiver, false);
+               sendMsgToClient (enc_comment, receiver, true);
         }
         
         return true;

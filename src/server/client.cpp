@@ -21,10 +21,11 @@ CLIENT::CLIENT (const CLIENT &c)
 }
 
 // parameters constructor
-CLIENT::CLIENT (CRYPTO &ci, int &sfd)
+CLIENT::CLIENT (CRYPTO &ci, int &sfd, std::string &name)
 {
 	cryptinfo = ci;
 	sockfd = sfd;
+        nume = name;
 }
 
 bool CLIENT::setCI (CRYPTO &ci)
