@@ -29,6 +29,13 @@ std::string SERVER::decryptMSG (std::string &msg, CLIENT &sender)
 	return m;
 }
 
+std::string SERVER::decryptMSG (std::string &msg, std::string &pk, std::string &nonce)
+{
+	std::string m = crypto_box_open (msg, nonce, pk, cryptinfo.getSK());
+
+	return m;
+}
+
 std::string SERVER::encryptMSG (std::string &msg, CLIENT &receiver)
 {
 	std::string c = crypto_box(msg, cryptinfo.getNonce(), receiver.getCI().getPK(), cryptinfo.getSK());
@@ -43,7 +50,8 @@ bool SERVER::sendMessage (std::string &msg, CLIENT &sender)
 	for(std::list<CLIENT>::iterator it = listaclienti.begin(); it != listaclienti.end(); it++){
 		if(*it != sender){
 			std::string c = encryptMSG (m, *it);
-
+                        std::string cname = encryptMSG (sender.getNume(), *it);
+                        sendMsgToClient (cname, *it);
 			sendMsgToClient (c, *it);
 		}
 	}
@@ -59,8 +67,10 @@ bool SERVER::sendMsgToClient (std::string &msg, CLIENT &receiver)
 bool SERVER::sendMessageList (CLIENT &receiver)
 {
         for(std::list<MESAJ>::iterator it = listamesaje.begin(); it != listamesaje.end(); it++){
-               sendMsgToClient ((*it).getName(), receiver);
-               sendMsgToClient ((*it).getComment(), receiver);
+               std::string cname = encryptMSG ((*it).getName(), receiver);
+               std::string enc_comment = encryptMSG ((*it).getComment(), receiver);
+               sendMsgToClient (cname, receiver);
+               sendMsgToClient (enc_comment, receiver);
         }
         
         return true;
