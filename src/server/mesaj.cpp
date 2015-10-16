@@ -5,6 +5,13 @@ MESAJ::MESAJ()
 
 }
 
+// parameters constructor
+MESAJ::MESAJ (std::string &n, std::string &c)
+{
+        name = n;
+        comment = c;
+}
+
 MESAJ::~MESAJ()
 {
 
