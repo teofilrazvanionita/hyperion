@@ -61,6 +61,16 @@ bool SERVER::sendMessage (std::string &msg, CLIENT &sender)
 
 bool SERVER::sendMsgToClient (std::string &msg, CLIENT &receiver, bool sendendl)
 {
+        if(write(receiver.getSFD(), msg.c_str(), msg.size()) == -1){
+                std::cerr << "write() error" << std::endl;
+                exit (EXIT_FAILURE);
+        }
+        if(sendendl){
+                if(write(receiver.getSFD(), "\n", 1) == -1){
+                        std::cerr << "write() error" << std::endl;
+                        exit (EXIT_FAILURE);
+                }
+        }
 	return true;
 }
 

@@ -4,9 +4,23 @@
 #include <list>
 #include <thread>
 #include <mutex>
+#include <iostream>
+
 #include "mesaj.h"
 #include "crypto.h"
 #include "client.h"
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    
+#include <unistd.h>
+#include <stdlib.h>
+
+#ifdef __cplusplus
+}
+#endif
 
 
 class SERVER {
