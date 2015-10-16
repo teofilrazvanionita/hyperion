@@ -123,10 +123,12 @@ bool SERVER::sendMsgToClient (std::string &msg, CLIENT &receiver, bool sendendl)
 bool SERVER::sendMessageList (CLIENT &receiver)
 {
         for(std::list<MESAJ>::iterator it = listamesaje.begin(); it != listamesaje.end(); it++){
-               std::string cname = encryptMSG ((*it).getName(), receiver);
-               std::string enc_comment = encryptMSG ((*it).getComment(), receiver);
-               sendMsgToClient (cname, receiver, false);
-               sendMsgToClient (enc_comment, receiver, true);
+               //std::string cname = encryptMSG ((*it).getName(), receiver);
+               //std::string enc_comment = encryptMSG ((*it).getComment(), receiver);
+               //sendMsgToClient (cname, receiver, false);
+               //sendMsgToClient (enc_comment, receiver, true);
+               sendMsgToClient ((*it).getName(), receiver, false);
+               sendMsgToClient ((*it).getComment(), receiver, false);
         }
         
         return true;
@@ -202,8 +204,6 @@ void client_Communication (SERVER *server_p, int sockfd)
                 server_p->mtxLock();
                 server_p->addMessage(mes);  // add message to message list
                 server_p->sendMessage(msg, client); // send message to the other clients
-                server_p->mtxUnlock();
-                
-                
+                server_p->mtxUnlock();        
         }
 }
