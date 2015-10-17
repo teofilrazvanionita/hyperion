@@ -15,7 +15,7 @@ class CLIENT {
 		int& getSFD ();
                 std::string& getNume ();
 		CLIENT (const CLIENT &c);	// copy constructor
-		bool operator == (CLIENT &c);
+		bool operator == (const CLIENT &c);
 		bool operator != (CLIENT &c);
 	private:
 		CRYPTO cryptinfo;

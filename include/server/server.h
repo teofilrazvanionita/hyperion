@@ -37,6 +37,7 @@ class SERVER {
 		~SERVER ();
 		bool addMessage (MESAJ &m);
 		bool addClient (CLIENT &c);
+                bool removeClient (CLIENT &c);
 		std::string decryptMSG (std::string &msg, CLIENT &sender);
                 std::string decryptMSG (std::string &msg, std::string &pk, std::string &nonce);
 		std::string encryptMSG (std::string &msg, CLIENT &receiver);

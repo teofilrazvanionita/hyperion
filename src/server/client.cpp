@@ -52,10 +52,10 @@ CLIENT& CLIENT::operator = (const CLIENT &c)
 	return *this;
 }
 
-bool CLIENT:: operator == (CLIENT &c){
+bool CLIENT:: operator == (const CLIENT &c){
 	
 	if(this != &c){
-		if ((cryptinfo == c.getCI()) && (sockfd == c.getSFD()))
+		if ((cryptinfo == ((CLIENT &)c).getCI()) && (sockfd == ((CLIENT &)c).getSFD()))
 			return true;
 	}else
 		return true;

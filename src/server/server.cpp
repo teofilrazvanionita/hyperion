@@ -65,6 +65,12 @@ bool SERVER::addClient (CLIENT &c)
 	return true;
 }
 
+bool SERVER::removeClient (CLIENT &c)
+{
+        listaclienti.remove((const CLIENT &)c);
+        return true;
+}
+
 std::string SERVER::decryptMSG (std::string &msg, CLIENT &sender)
 {
 	std::string m = crypto_box_open (msg, sender.getCI().getNonce(), sender.getCI().getPK(), cryptinfo.getSK());
@@ -194,7 +200,11 @@ void client_Communication (SERVER *server_p, int sockfd)
         while (1){
                 char bufread[1024];
                 memset (bufread, 0, 1024);
-                read(sockfd, bufread, 1024);    // blocks until a message arrives
+                if(!read(sockfd, bufread, 1024)){
+                        server_p->removeClient(client);
+                        close (sockfd);
+                        return;
+                }    // blocks until a message arrives
                 
                 std::string msg = bufread;
                 
