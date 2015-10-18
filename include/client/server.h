@@ -1,5 +1,5 @@
-#ifndef __CLIENT_H
-#define __CLIENT_H
+#ifndef __SERVER_H
+#define __SERVER_H
 
 #include "crypto.h"
 

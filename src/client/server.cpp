@@ -59,14 +59,3 @@ CRYPTO& SERVER::getCI ()
 {
 	return cryptinfo;
 }
-
-int& SERVER::getSFD ()
-{
-	return sockfd;
-}
-
-std::string& SERVER::getNume ()
-{
-	return nume;
-}
-
