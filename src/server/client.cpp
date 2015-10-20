@@ -63,7 +63,7 @@ bool CLIENT:: operator == (const CLIENT &c){
 	return false;
 }
 
-bool CLIENT::operator != (CLIENT &c)
+bool CLIENT::operator != (const CLIENT &c)
 {
 	return !(*this == c);
 }

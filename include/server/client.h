@@ -16,7 +16,7 @@ class CLIENT {
                 std::string& getNume ();
 		CLIENT (const CLIENT &c);	// copy constructor
 		bool operator == (const CLIENT &c);
-		bool operator != (CLIENT &c);
+		bool operator != (const CLIENT &c);
 	private:
 		CRYPTO cryptinfo;
 		std::string nume;

@@ -9,11 +9,11 @@ class SERVER {
 		~SERVER ();
 		SERVER (CRYPTO &ci);	// parameters constructor
 		bool setCI (CRYPTO &ci);
-		SERVER& operator = (const SERVER &c);	// assignment operator
+		SERVER& operator = (const SERVER &s);	// assignment operator
 		CRYPTO& getCI ();
-		SERVER (const SERVER &c);	// copy constructor
-		bool operator == (const SERVER &c);
-		bool operator != (SERVER &c);
+		SERVER (const SERVER &s);	// copy constructor
+		bool operator == (const SERVER &s);
+		bool operator != (const SERVER &c);
 	private:
 		CRYPTO cryptinfo;
 };

@@ -50,7 +50,7 @@ bool SERVER:: operator == (const SERVER &c){
 	return false;
 }
 
-bool SERVER::operator != (SERVER &c)
+bool SERVER::operator != (const SERVER &c)
 {
 	return !(*this == c);
 }
