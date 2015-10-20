@@ -2,9 +2,9 @@
 
 CPPC = g++
 HYPERION_DIR = ../../
-HYPERION_INCL_DIR = ${HYPERION_DIR}include/server
+HYPERION_INCL_DIR = ${HYPERION_DIR}include
 
-CPPFLAGS = -g -I${HYPERION_INCL_DIR} \
+CPPFLAGS = -g \
 	   -std=c++11 \
 	   -I/usr/include/nacl \
 	   -Wall \

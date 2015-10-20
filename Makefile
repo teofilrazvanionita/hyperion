@@ -4,7 +4,7 @@
 # (The library directory is first so that the library gets built first)
 #
 
-DIRS = 	src/server
+DIRS = 	src/server src/client
 
 BUILD_DIRS = ${DIRS} ${CDIRS}
 

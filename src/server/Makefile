@@ -9,20 +9,20 @@ all : ${EXE}
 ${EXE}: main.o server.o mesaj.o client.o crypto.o
 	${CPPC} main.o server.o mesaj.o client.o crypto.o /usr/lib64/randombytes.o -o ${EXE} ${LDLIBS}
 
-main.o: main.cpp ${HYPERION_INCL_DIR}/server.h
-	${CPPC} main.cpp ${CPPFLAGS} -c -o $@
+main.o: main.cpp ${HYPERION_INCL_DIR}/server/server.h
+	${CPPC} main.cpp ${CPPFLAGS} -I${HYPERION_INCL_DIR}/server -c -o $@
 
-server.o: server.cpp ${HYPERION_INCL_DIR}/server.h ${HYPERION_INCL_DIR}/mesaj.h ${HYPERION_INCL_DIR}/crypto.h ${HYPERION_INCL_DIR}/client.h
-	${CPPC} server.cpp $(CPPFLAGS) -c -o $@
+server.o: server.cpp ${HYPERION_INCL_DIR}/server/server.h ${HYPERION_INCL_DIR}/server/mesaj.h ${HYPERION_INCL_DIR}/server/crypto.h ${HYPERION_INCL_DIR}/server/client.h
+	${CPPC} server.cpp $(CPPFLAGS) -I${HYPERION_INCL_DIR}/server -c -o $@
 
-mesaj.o: mesaj.cpp ${HYPERION_INCL_DIR}/mesaj.h
-	${CPPC} mesaj.cpp $(CPPFLAGS) -c -o $@
+mesaj.o: mesaj.cpp ${HYPERION_INCL_DIR}/server/mesaj.h
+	${CPPC} mesaj.cpp $(CPPFLAGS) -I${HYPERION_INCL_DIR}/server -c -o $@
 
-client.o: client.cpp ${HYPERION_INCL_DIR}/client.h ${HYPERION_INCL_DIR}/crypto.h 
-	${CPPC} client.cpp $(CPPFLAGS) -c -o $@
+client.o: client.cpp ${HYPERION_INCL_DIR}/server/client.h ${HYPERION_INCL_DIR}/server/crypto.h 
+	${CPPC} client.cpp $(CPPFLAGS) -I${HYPERION_INCL_DIR}/server -c -o $@
 
-crypto.o: crypto.cpp ${HYPERION_INCL_DIR}/crypto.h
-	${CPPC} crypto.cpp $(CPPFLAGS) -c -o $@
+crypto.o: crypto.cpp ${HYPERION_INCL_DIR}/server/crypto.h
+	${CPPC} crypto.cpp $(CPPFLAGS) -I${HYPERION_INCL_DIR}/server  -c -o $@
 
 allgen : ${GEN_EXE}
 
