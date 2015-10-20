@@ -13,9 +13,9 @@ SERVER::~SERVER()
 }
 
 // copy constructor
-SERVER::SERVER (const SERVER &c)
+SERVER::SERVER (const SERVER &s)
 {
-	cryptinfo = ((SERVER &)c).getCI();
+	cryptinfo = ((SERVER &)s).getCI();
 }
 
 // parameters constructor
@@ -31,18 +31,18 @@ bool SERVER::setCI (CRYPTO &ci)
 }
 
 // assignment operator
-SERVER& SERVER::operator = (const SERVER &c)
+SERVER& SERVER::operator = (const SERVER &s)
 {
 	if (this != &c)
-		cryptinfo = ((SERVER &)c).getCI();
+		cryptinfo = ((SERVER &)s).getCI();
 
 	return *this;
 }
 
-bool SERVER:: operator == (const SERVER &c){
+bool SERVER:: operator == (const SERVER &s){
 	
 	if(this != &c){
-		if (cryptinfo == ((SERVER &)c).getCI())
+		if (cryptinfo == ((SERVER &)s).getCI())
 			return true;
 	}else
 		return true;
@@ -50,9 +50,9 @@ bool SERVER:: operator == (const SERVER &c){
 	return false;
 }
 
-bool SERVER::operator != (const SERVER &c)
+bool SERVER::operator != (const SERVER &s)
 {
-	return !(*this == c);
+	return !(*this == s);
 }
 
 CRYPTO& SERVER::getCI ()

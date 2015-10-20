@@ -13,7 +13,7 @@ class SERVER {
 		CRYPTO& getCI ();
 		SERVER (const SERVER &s);	// copy constructor
 		bool operator == (const SERVER &s);
-		bool operator != (const SERVER &c);
+		bool operator != (const SERVER &s);
 	private:
 		CRYPTO cryptinfo;
 };
