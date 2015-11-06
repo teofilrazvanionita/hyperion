@@ -143,7 +143,7 @@ bool SERVER::sendMessageList (CLIENT &receiver)
 bool SERVER::verifyName (std::string &nume)
 {
         for(std::list<CLIENT>::iterator it = listaclienti.begin(); it != listaclienti.end(); it++){
-                if(nume == (*it).getNume())
+                if(!nume.compare((*it).getNume()))
                        return false;
         }
         return true;
