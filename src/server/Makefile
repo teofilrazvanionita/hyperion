@@ -4,10 +4,18 @@ LINUX_EXE = hyperiond
 
 EXE = ${LINUX_EXE}
 
+ARCH := $(shell uname -m)
+	
+ifeq ($(ARCH), x86_64) 
+    LIBDIRSUFFIX = 64
+else 
+    LIBDIRSUFFIX =
+endif
+
 all : ${EXE}
 
 ${EXE}: main.o server.o mesaj.o client.o crypto.o
-	${CPPC} main.o server.o mesaj.o client.o crypto.o /usr/lib64/randombytes.o -o ${EXE} ${LDLIBS}
+	${CPPC} main.o server.o mesaj.o client.o crypto.o /usr/lib${LIBDIRSUFFIX}/randombytes.o -o ${EXE} ${LDLIBS}
 
 main.o: main.cpp ${HYPERION_INCL_DIR}/server/server.h
 	${CPPC} main.cpp ${CPPFLAGS} -I${HYPERION_INCL_DIR}/server -c -o $@
