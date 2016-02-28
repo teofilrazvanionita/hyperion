@@ -48,6 +48,7 @@ class SERVER {
                 void mtxLock ();    // locks mutex
                 void mtxUnlock ();  // unlocks mutex
                 void Play ();
+                void exchangeCI (CLIENT &c);
 	private:
 		CRYPTO cryptinfo;
 		int sockfd;

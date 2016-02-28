@@ -176,6 +176,11 @@ void SERVER::Play ()
         }
 }
 
+void exchangeCI (CLIENT &c)
+{
+        
+}
+
 // do all the communication with the clients in this thread function
 void client_Communication (SERVER *server_p, int sockfd)
 {
