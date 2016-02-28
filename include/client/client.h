@@ -15,6 +15,6 @@ class CLIENT {
             CRYPTO cryptinfo;
             int sockfd;
             SERVER server;
-}
+};
 
 #endif
