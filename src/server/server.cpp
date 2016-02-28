@@ -176,7 +176,7 @@ void SERVER::Play ()
         }
 }
 
-void exchangeCI (CLIENT &c)
+void SERVER::exchangeCI (CLIENT &c)
 {
         
 }
