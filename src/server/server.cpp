@@ -176,7 +176,7 @@ void SERVER::Play ()
         }
 }
 
-void SERVER::exchangeCI (CLIENT &c)
+void SERVER::exchangeCI (int sockfd)
 {
         
 }
