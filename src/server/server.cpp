@@ -176,9 +176,9 @@ void SERVER::Play ()
         }
 }
 
-void SERVER::exchangeCI (int sockfd)
+CLIENT SERVER::exchangeCIandName (int sockfd)
 {
-        
+
 }
 
 // do all the communication with the clients in this thread function
