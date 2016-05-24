@@ -10,7 +10,7 @@ class CLIENT {
             CLIENT ();
             ~CLIENT ();
             void Play ();
-            void exchangeCI ();
+            SERVER exchangeCIandName ();
 	private:
             CRYPTO cryptinfo;
             int sockfd;

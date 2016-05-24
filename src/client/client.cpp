@@ -15,7 +15,7 @@ void CLIENT::Play ()
     
 }
 
-void CLIENT::exchangeCI ()
+SERVER CLIENT::exchangeCIandName ()
 {
     
 }
