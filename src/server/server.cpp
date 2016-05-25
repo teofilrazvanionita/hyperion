@@ -111,7 +111,7 @@ bool SERVER::sendMessage (std::string &msg, CLIENT &sender)
 	return true;
 }
 
-bool SERVER::sendMsgToClient (std::string &msg, CLIENT &receiver, bool sendendl)
+void SERVER::sendMsgToClient (std::string &msg, CLIENT &receiver, bool sendendl)
 {
         if(write(receiver.getSFD(), msg.c_str(), msg.size()) == -1){
                 std::cerr << "write() error" << std::endl;
@@ -123,7 +123,6 @@ bool SERVER::sendMsgToClient (std::string &msg, CLIENT &receiver, bool sendendl)
                         exit (EXIT_FAILURE);
                 }
         }
-	return true;
 }
 
 bool SERVER::sendMessageList (CLIENT &receiver)
@@ -176,35 +175,133 @@ void SERVER::Play ()
         }
 }
 
-CLIENT SERVER::exchangeCIandName (int sockfd)
+CLIENT SERVER::exchangeCIandName (int sfd)
 {
+        std::string client_pk;
+        std::string client_nonce;
+        std::string client_name;
+        
+        sendPK(sfd);
+        sendNonce(sfd);
+        
+        client_pk = recvPK(sfd);
+        client_nonce =  recvNonce(sfd);
+        
+        CRYPTO ci (client_pk, client_nonce);
+        
+        client_name = recvName (sfd);
+        
+        CLIENT client (ci, sfd, client_name);
+        
+        return client;
+}
 
+void SERVER::sendPK (int sfd)
+{
+        if(write (sfd, cryptinfo.getPK().c_str(), crypto_box_PUBLICKEYBYTES ) != crypto_box_PUBLICKEYBYTES){
+                perror ("write");
+                exit (EXIT_FAILURE);
+        }
+}
+
+void SERVER::sendNonce (int sfd)
+{
+        if(write (sfd, cryptinfo.getNonce().c_str(), crypto_box_NONCEBYTES) != crypto_box_NONCEBYTES){
+                perror ("write");
+                exit (EXIT_FAILURE);
+        }
+}
+
+std::string SERVER::recvPK (int sfd)
+{
+        std::string server_pk;
+        char buf[crypto_box_PUBLICKEYBYTES];
+        
+        memset (buf, 0, crypto_box_PUBLICKEYBYTES);
+        
+        if(read (sfd, buf, crypto_box_PUBLICKEYBYTES) != crypto_box_PUBLICKEYBYTES){
+                perror ("read");
+                exit (EXIT_FAILURE);
+        }
+        
+        server_pk = buf;
+        
+        return server_pk;
+}
+
+std::string SERVER::recvNonce (int sfd)
+{
+        std::string server_nonce;
+        char buf[crypto_box_NONCEBYTES];
+        
+        memset (buf, 0, crypto_box_NONCEBYTES);
+        
+        if(read (sfd, buf, crypto_box_NONCEBYTES) != crypto_box_NONCEBYTES){
+                perror ("read");
+                exit (EXIT_FAILURE);
+        }
+        
+        server_nonce = buf;
+        
+        return server_nonce;
+}
+
+
+std::string SERVER::recvName (int sfd)
+{
+        std::string client_name;
+        char buf[64];
+        ssize_t br;
+        
+        memset (buf, 0, 64);
+        
+        while(1){
+                if((br = read (sfd, buf, 64)) == -1){
+                        perror ("read");
+                        exit (EXIT_FAILURE);
+                }
+               
+                if(!br){}   // EOF
+                
+                client_name = buf;
+                
+                mtxLock ();
+                if(verifyName(client_name)){
+                        // client name free for use
+                        mtxUnlock();
+                        if(write(sfd, "OK", 2) != 2){
+                                perror("write");
+                                exit (EXIT_FAILURE);
+                        }
+                        break;
+                }
+                mtxUnlock();
+                if(write(sfd, "NotOK", 5) != 5){
+                        perror ("write");
+                        exit (EXIT_FAILURE);
+                }
+        }
+        
+        return client_name;
 }
 
 // do all the communication with the clients in this thread function
 void client_Communication (SERVER *server_p, int sockfd)
 {
-        char buffer[6];
-        
-        // create fictive client for testing, as we don't have the client program yet... using telnet as client
-        CRYPTO client_CI;
-        
-        std::string numeclient = "client";
-        snprintf (buffer, 6, "%d: ", sockfd);
-        numeclient += buffer;
-        
-        CLIENT client(client_CI, sockfd, numeclient);
+    
+        CLIENT client = server_p->exchangeCIandName(sockfd);
         
         server_p->mtxLock();
         server_p->addClient(client);
         server_p->sendMessageList(client);
         server_p->mtxUnlock();
         
-        write(sockfd, "Welcome to HYPERION Chat Server\n", 32);
-        
+       
         while (1){
                 char bufread[1024];
+        
                 memset (bufread, 0, 1024);
+                
                 if(!read(sockfd, bufread, 1024)){
                         server_p->removeClient(client);
                         close (sockfd);
@@ -214,7 +311,7 @@ void client_Communication (SERVER *server_p, int sockfd)
                 std::string msg = bufread;
                 
                 //construct MESAJ object
-                MESAJ mes(numeclient, msg);
+                MESAJ mes(client.getNume(), msg);
                 
                 server_p->mtxLock();
                 server_p->addMessage(mes);  // add message to message list

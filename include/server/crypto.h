@@ -13,10 +13,11 @@ class CRYPTO {
 	public:
 		CRYPTO ();
 		~CRYPTO ();
-		CRYPTO& operator = (const CRYPTO &ci);	// assignment operator
-		std::string& getPK ();
-		std::string& getSK ();
-		std::string& getNonce ();
+                CRYPTO (std::string &client_pk, std::string &client_nonce);   // incomplete parameters contructor
+		CRYPTO & operator = (const CRYPTO &ci);	// assignment operator
+		std::string & getPK ();
+		std::string & getSK ();
+		std::string & getNonce ();
 		CRYPTO (const CRYPTO &ci);		// copy constructor
 		bool operator == (const CRYPTO &ci);
 		bool operator != (const CRYPTO &ci);

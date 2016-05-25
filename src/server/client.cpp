@@ -41,7 +41,7 @@ bool CLIENT::setSFD (int &sfd)
 }
 
 // assignment operator
-CLIENT& CLIENT::operator = (const CLIENT &c)
+CLIENT & CLIENT::operator = (const CLIENT &c)
 {
 	if (this != &c){
 		cryptinfo = ((CLIENT &)c).getCI();
@@ -68,17 +68,17 @@ bool CLIENT::operator != (const CLIENT &c)
 	return !(*this == c);
 }
 
-CRYPTO& CLIENT::getCI ()
+CRYPTO & CLIENT::getCI ()
 {
 	return cryptinfo;
 }
 
-int& CLIENT::getSFD ()
+int CLIENT::getSFD ()
 {
 	return sockfd;
 }
 
-std::string& CLIENT::getNume ()
+std::string & CLIENT::getNume ()
 {
 	return nume;
 }

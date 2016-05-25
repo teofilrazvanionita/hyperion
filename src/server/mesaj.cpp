@@ -24,12 +24,12 @@ MESAJ::MESAJ(const MESAJ& mesaj)
     comment = ((MESAJ &)mesaj).getComment();
 }
 
-std::string& MESAJ::getName()
+std::string & MESAJ::getName()
 {
     return name;
 }
 
-std::string& MESAJ::getComment()
+std::string & MESAJ::getComment()
 {
     return comment;
 }

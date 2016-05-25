@@ -27,8 +27,14 @@ CRYPTO::~CRYPTO()
 
 }
 
+CRYPTO::CRYPTO  (std::string& client_pk, std::string& client_nonce)
+{
+        pk = client_pk;
+        n = client_nonce;
+}
+
 // assignment operator
-CRYPTO& CRYPTO::operator = (const CRYPTO &ci)
+CRYPTO & CRYPTO::operator = (const CRYPTO &ci)
 {
 	if(this != &ci){
 		pk = ((CRYPTO &)ci).getPK();
@@ -55,17 +61,17 @@ bool CRYPTO::operator != (const CRYPTO &ci){
 	return !(*this == ci);
 }
 
-std::string& CRYPTO::getPK ()
+std::string & CRYPTO::getPK ()
 {
 	return this->pk;
 }
 
-std::string& CRYPTO::getSK ()
+std::string & CRYPTO::getSK ()
 {
 	return this->sk;
 }
 
-std::string& CRYPTO::getNonce ()
+std::string & CRYPTO::getNonce ()
 {
 	return this->n;
 }

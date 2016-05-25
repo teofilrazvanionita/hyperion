@@ -32,10 +32,15 @@ class CLIENT {
             ~CLIENT ();
             void Play ();
             SERVER exchangeCIandName ();
+            void sendPK ();
+            void sendNonce ();
+            std::string recvPK ();
+            std::string recvNonce ();
 	private:
             CRYPTO cryptinfo;
             int sockfd;
             SERVER server;
+            bool name_verified;
 };
 
 #endif

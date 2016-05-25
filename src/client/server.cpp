@@ -31,7 +31,7 @@ bool SERVER::setCI (CRYPTO &ci)
 }
 
 // assignment operator
-SERVER& SERVER::operator = (const SERVER &s)
+SERVER & SERVER::operator = (const SERVER &s)
 {
 	if (this != &s)
 		cryptinfo = ((SERVER &)s).getCI();
@@ -55,7 +55,7 @@ bool SERVER::operator != (const SERVER &s)
 	return !(*this == s);
 }
 
-CRYPTO& SERVER::getCI ()
+CRYPTO & SERVER::getCI ()
 {
 	return cryptinfo;
 }
