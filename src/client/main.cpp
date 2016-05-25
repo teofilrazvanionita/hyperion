@@ -1,8 +1,9 @@
 #include "client.h"
 
-int main()
+int main(int argc, char *argv[])
 {
-	CLIENT cc;
+        
+	CLIENT cc(argv[1]);
 	cc.Play();
 
 	return 0;
