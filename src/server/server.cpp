@@ -97,15 +97,13 @@ bool SERVER::sendMessage (std::string &msg, CLIENT &sender)
 	//std::string m = decryptMSG (msg, sender);
 
 	for(std::list<CLIENT>::iterator it = listaclienti.begin(); it != listaclienti.end(); it++){
-		if(*it != sender){
-			//std::string c = encryptMSG (m, *it);
-                        //std::string cname = encryptMSG (sender.getNume(), *it);
-                        //sendMsgToClient (cname, *it, false);
-      			//sendMsgToClient (c, *it, true);
-                        sendMsgToClient (sender.getNume(), *it, false);
-                        sendMsgToClient (msg, *it, false);
+		//std::string c = encryptMSG (m, *it);
+                //std::string cname = encryptMSG (sender.getNume(), *it);
+                //sendMsgToClient (cname, *it, false);
+		//sendMsgToClient (c, *it, true);
+                sendMsgToClient (sender.getNume(), *it, false);
+                sendMsgToClient (msg, *it, false);
 
-		}
 	}
 
 	return true;
