@@ -75,6 +75,9 @@ SERVER CLIENT::exchangeCIandName ()
                 
                 if(!br){}   //EOF
                 
+                buf[br-1] = ':';
+                buf[br] = ' ';
+                
                 if(write (sockfd, buf, sizeof(buf)) != sizeof(buf)){
                         perror ("write");
                         exit (EXIT_FAILURE);
