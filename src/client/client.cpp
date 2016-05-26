@@ -150,7 +150,23 @@ int CLIENT::getSFD ()
 
 void readLoop (CLIENT *client_p)
 {
-    
+        char buf[1024];
+        ssize_t br;
+        
+        while(1){
+                memset (buf, 0, 1024);
+            
+                if((br = read (client_p->getSFD(), buf, 1024)) == -1){
+                        perror ("read");
+                        exit (EXIT_FAILURE);
+                }
+                if(!br)
+                        return;
+                if(write(STDOUT_FILENO, buf, br) != br){
+                        perror ("write");
+                        exit (EXIT_FAILURE);
+                }
+        }
 }
 
 void writeLoop (CLIENT *client_p)
@@ -175,5 +191,5 @@ void writeLoop (CLIENT *client_p)
                         exit (EXIT_FAILURE);
                 }
                 
-    }
+        }
 }
