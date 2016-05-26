@@ -38,6 +38,10 @@ CLIENT::~CLIENT ()
 void CLIENT::Play ()
 {
         server = exchangeCIandName ();
+        
+        std::thread (writeLoop, this).detach();
+        
+        std::thread (readLoop, this).detach();
 }
 
 SERVER CLIENT::exchangeCIandName ()
@@ -137,4 +141,39 @@ std::string CLIENT::recvNonce ()
         server_nonce = buf;
         
         return server_nonce;
+}
+
+int CLIENT::getSFD ()
+{
+        return sockfd;
+}
+
+void readLoop (CLIENT *client_p)
+{
+    
+}
+
+void writeLoop (CLIENT *client_p)
+{
+        char buf[1024];
+        ssize_t br;
+        
+        while(1){
+                memset (buf, 0, 1024);
+    
+                if((br = read (STDIN_FILENO, buf, 1024)) == -1){
+                        perror ("read");
+                        exit (EXIT_FAILURE);
+                }
+                if(!br){
+                        //EOF
+                        close (client_p->getSFD());
+                        return;
+                }
+                if(write (client_p->getSFD(), buf, br) != br){
+                        perror ("write");
+                        exit (EXIT_FAILURE);
+                }
+                
+    }
 }

@@ -1,6 +1,7 @@
 #ifndef __CLIENT_H
 #define __CLIENT_H
 
+#include <thread>
 
 #include "crypto.h"
 #include "server.h"
@@ -36,11 +37,16 @@ class CLIENT {
             void sendNonce ();
             std::string recvPK ();
             std::string recvNonce ();
+            int getSFD ();
 	private:
             CRYPTO cryptinfo;
             int sockfd;
             SERVER server;
             bool name_verified;
 };
+
+
+void readLoop (CLIENT *client_p);
+void writeLoop (CLIENT *client_p);
 
 #endif
