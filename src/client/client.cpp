@@ -42,6 +42,8 @@ void CLIENT::Play ()
         std::thread (writeLoop, this).detach();
         
         std::thread (readLoop, this).detach();
+        
+        while(true){ sleep(5); }
 }
 
 SERVER CLIENT::exchangeCIandName ()
