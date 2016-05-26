@@ -253,9 +253,9 @@ std::string SERVER::recvName (int sfd)
         char buf[64];
         ssize_t br;
         
-        memset (buf, 0, 64);
-        
         while(1){
+                memset (buf, 0, 64);
+                
                 if((br = read (sfd, buf, 64)) == -1){
                         perror ("read");
                         exit (EXIT_FAILURE);
@@ -266,17 +266,17 @@ std::string SERVER::recvName (int sfd)
                 client_name = buf;
                 
                 mtxLock ();
-                if(verifyName(client_name)){
+                if(verifyName (client_name)){
                         // client name free for use
-                        mtxUnlock();
-                        if(write(sfd, "OK", 2) != 2){
-                                perror("write");
+                        mtxUnlock ();
+                        if(write (sfd, "Y", 1) != 1){
+                                perror ("write");
                                 exit (EXIT_FAILURE);
                         }
                         break;
                 }
-                mtxUnlock();
-                if(write(sfd, "NotOK", 5) != 5){
+                mtxUnlock ();
+                if(write (sfd, "N", 1) != 1){
                         perror ("write");
                         exit (EXIT_FAILURE);
                 }

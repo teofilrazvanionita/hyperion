@@ -4,10 +4,12 @@ CLIENT::CLIENT (char *IP)
 {
 	struct sockaddr_in dest_addr;
 
-	sockfd = socket(AF_INET, SOCK_STREAM, 0);
+        name_verified = false;
+        
+	sockfd = socket (AF_INET, SOCK_STREAM, 0);
 	if(sockfd == -1){
-		perror("socket");
-		exit(EXIT_FAILURE);	// v. pthread_exit
+		perror ("socket");
+		exit (EXIT_FAILURE);	// v. pthread_exit
 	}
 
 
@@ -17,13 +19,13 @@ CLIENT::CLIENT (char *IP)
 	memset(&(dest_addr.sin_zero), 0, 8);
 
 	if (connect(sockfd, (struct sockaddr *)&dest_addr, sizeof(struct sockaddr)) == -1){
-		if(write(STDERR_FILENO, "Couldn't connect to the server\n", 31) != 31){
-                        perror("write");
-                        exit(EXIT_FAILURE);
+		if(write (STDERR_FILENO, "Couldn't connect to the server\n", 31) != 31){
+                        perror ("write");
+                        exit (EXIT_FAILURE);
                 }
 		if(close(sockfd) == -1){
-			perror("close");
-			exit(EXIT_FAILURE);	// v. pthread_exit
+			perror ("close");
+			exit (EXIT_FAILURE);	// v. pthread_exit
 		}  
 	}
 }
@@ -42,12 +44,44 @@ SERVER CLIENT::exchangeCIandName ()
 {       
         std::string server_pk;
         std::string server_nonce;
+        ssize_t br;
+        char buf[64];
+        char responce;
+        
+        server_pk = recvPK ();
+        server_nonce =  recvNonce ();
         
         sendPK();
         sendNonce();
         
-        server_pk = recvPK();
-        server_nonce =  recvNonce();
+        while(!name_verified){
+                if(write (STDOUT_FILENO, "Please select a username: ", 26) != 26){
+                    perror ("write");
+                    exit (EXIT_FAILURE);
+                }
+                
+                memset (buf, 0, 64);
+                
+                if((br = read (STDIN_FILENO, buf, 64)) == -1){
+                        perror ("read");
+                        exit (EXIT_FAILURE);
+                }
+                
+                if(!br){}   //EOF
+                
+                if(write (sockfd, buf, sizeof(buf)) != sizeof(buf)){
+                        perror ("write");
+                        exit (EXIT_FAILURE);
+                }
+                
+                if(read (sockfd, &responce, 1) != 1){
+                        perror ("read");
+                        exit (EXIT_FAILURE);
+                }
+                
+                if(responce == 'Y')
+                        name_verified = true;
+        }
         
         CRYPTO cryptinfo (server_pk, server_nonce);
         SERVER server (cryptinfo);

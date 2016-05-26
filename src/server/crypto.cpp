@@ -57,7 +57,8 @@ bool CRYPTO::operator == (const CRYPTO &ci)
 	return true;
 }
 
-bool CRYPTO::operator != (const CRYPTO &ci){
+bool CRYPTO::operator != (const CRYPTO &ci)
+{
 	return !(*this == ci);
 }
 
