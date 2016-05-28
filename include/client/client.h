@@ -38,6 +38,9 @@ class CLIENT {
             std::string recvPK ();
             std::string recvNonce ();
             int getSFD ();
+            std::string encryptMSG (std::string &msg, SERVER &receiver);
+            std::string decryptMSG (std::string &msg, SERVER &sender);
+            SERVER & getServer ();
 	private:
             CRYPTO cryptinfo;
             int sockfd;

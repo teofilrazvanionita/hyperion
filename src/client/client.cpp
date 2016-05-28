@@ -38,7 +38,7 @@ CLIENT::~CLIENT ()
 void CLIENT::Play ()
 {
         server = exchangeCIandName ();
-        
+
         std::thread (writeLoop, this).detach();
         
         std::thread (readLoop, this).detach();
@@ -56,7 +56,7 @@ SERVER CLIENT::exchangeCIandName ()
         
         server_pk = recvPK ();
         server_nonce =  recvNonce ();
-        
+
         sendPK();
         sendNonce();
         
@@ -77,8 +77,8 @@ SERVER CLIENT::exchangeCIandName ()
                 
                 buf[br-1] = ':';
                 buf[br] = ' ';
-                
-                if(write (sockfd, buf, sizeof(buf)) != sizeof(buf)){
+                std::string name(buf);
+                if(write (sockfd, name.c_str(),name.size()) != name.size()){
                         perror ("write");
                         exit (EXIT_FAILURE);
                 }
@@ -117,9 +117,9 @@ void CLIENT::sendNonce ()
 std::string CLIENT::recvPK ()
 {
         std::string server_pk;
-        char buf[crypto_box_PUBLICKEYBYTES];
+        char buf[crypto_box_PUBLICKEYBYTES + 1];
         
-        memset (buf, 0, crypto_box_PUBLICKEYBYTES);
+        memset (buf, 0, crypto_box_PUBLICKEYBYTES + 1);
         
         if(read (sockfd, buf, crypto_box_PUBLICKEYBYTES) != crypto_box_PUBLICKEYBYTES){
                 perror ("read");
@@ -134,9 +134,9 @@ std::string CLIENT::recvPK ()
 std::string CLIENT::recvNonce ()
 {
         std::string server_nonce;
-        char buf[crypto_box_NONCEBYTES];
+        char buf[crypto_box_NONCEBYTES + 1];
         
-        memset (buf, 0, crypto_box_NONCEBYTES);
+        memset (buf, 0, crypto_box_NONCEBYTES + 1);
         
         if(read (sockfd, buf, crypto_box_NONCEBYTES) != crypto_box_NONCEBYTES){
                 perror ("read");
@@ -153,10 +153,42 @@ int CLIENT::getSFD ()
         return sockfd;
 }
 
+SERVER & CLIENT::getServer ()
+{
+        return server;
+}
+
+std::string CLIENT::decryptMSG (std::string &msg, SERVER &sender)
+{
+        std::string m;
+        try{
+                m = crypto_box_open (msg, sender.getCI().getNonce(), sender.getCI().getPK(), cryptinfo.getSK());
+        }
+        catch(char const *e){
+                write (STDERR_FILENO, e, 256);
+        }
+        
+	return m;
+}
+std::string CLIENT::encryptMSG (std::string &msg, SERVER &receiver)
+{
+        std::string c;
+        
+        try{
+                c = crypto_box(msg, cryptinfo.getNonce(), receiver.getCI().getPK(), cryptinfo.getSK());
+        }
+        catch(char const *e){
+                write (STDERR_FILENO, e, 256);
+        }
+
+	return c;
+}
+
 void readLoop (CLIENT *client_p)
 {
         char buf[1024];
         ssize_t br;
+        std::string m;
         
         while(1){
                 memset (buf, 0, 1024);
@@ -167,7 +199,12 @@ void readLoop (CLIENT *client_p)
                 }
                 if(!br)
                         return;
-                if(write(STDOUT_FILENO, buf, br) != br){
+                
+                std::string c(buf,br);
+
+                m = client_p->decryptMSG(c, client_p->getServer());
+                
+                if(write(STDOUT_FILENO, m.c_str(), m.size()) != m.size()){
                         perror ("write");
                         exit (EXIT_FAILURE);
                 }
@@ -178,6 +215,7 @@ void writeLoop (CLIENT *client_p)
 {
         char buf[1024];
         ssize_t br;
+        std::string c, m;
         
         while(1){
                 memset (buf, 0, 1024);
@@ -191,7 +229,10 @@ void writeLoop (CLIENT *client_p)
                         close (client_p->getSFD());
                         return;
                 }
-                if(write (client_p->getSFD(), buf, br) != br){
+                m = buf;
+                c = client_p->encryptMSG (m, client_p->getServer());
+                
+                if(write (client_p->getSFD(), c.c_str(), c.size()) != c.size()){
                         perror ("write");
                         exit (EXIT_FAILURE);
                 }

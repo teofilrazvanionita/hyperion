@@ -73,36 +73,54 @@ bool SERVER::removeClient (CLIENT &c)
 
 std::string SERVER::decryptMSG (std::string &msg, CLIENT &sender)
 {
-	std::string m = crypto_box_open (msg, sender.getCI().getNonce(), sender.getCI().getPK(), cryptinfo.getSK());
-
+        std::string m;
+        
+	try{
+                m = crypto_box_open (msg, sender.getCI().getNonce(), sender.getCI().getPK(), cryptinfo.getSK());
+        }
+        catch(char const *e){
+                write (STDERR_FILENO, e, 256);
+        }
 	return m;
 }
 
 std::string SERVER::decryptMSG (std::string &msg, std::string &pk, std::string &nonce)
 {
-	std::string m = crypto_box_open (msg, nonce, pk, cryptinfo.getSK());
-
+        std::string m;
+        
+        try{
+                m = crypto_box_open (msg, nonce, pk, cryptinfo.getSK());
+        }
+        catch(char const *e){
+                write (STDERR_FILENO, e, 256);
+        }
 	return m;
 }
 
 std::string SERVER::encryptMSG (std::string &msg, CLIENT &receiver)
 {
-	std::string c = crypto_box(msg, cryptinfo.getNonce(), receiver.getCI().getPK(), cryptinfo.getSK());
-
+        std::string c;
+        
+	try{
+                c = crypto_box(msg, cryptinfo.getNonce(), receiver.getCI().getPK(), cryptinfo.getSK());
+        }
+        catch(char const *e){
+                write (STDERR_FILENO, e, 256);
+        }
 	return c;
 }
 
 bool SERVER::sendMessage (std::string &msg, CLIENT &sender)
 {
-	//std::string m = decryptMSG (msg, sender);
-
+	std::string m = decryptMSG (msg, sender);
 	for(std::list<CLIENT>::iterator it = listaclienti.begin(); it != listaclienti.end(); it++){
-		//std::string c = encryptMSG (m, *it);
-                //std::string cname = encryptMSG (sender.getNume(), *it);
-                //sendMsgToClient (cname, *it, false);
-		//sendMsgToClient (c, *it, true);
-                sendMsgToClient (sender.getNume(), *it, false);
-                sendMsgToClient (msg, *it, false);
+		std::string c = encryptMSG (m, *it);
+                std::string cname = encryptMSG (sender.getNume(), *it);
+                sendMsgToClient (cname, *it, false);
+                sleep(1);
+		sendMsgToClient (c, *it, false);
+                //sendMsgToClient (sender.getNume(), *it, false);
+                //sendMsgToClient (msg, *it, false);
 
 	}
 
@@ -126,12 +144,14 @@ void SERVER::sendMsgToClient (std::string &msg, CLIENT &receiver, bool sendendl)
 bool SERVER::sendMessageList (CLIENT &receiver)
 {
         for(std::list<MESAJ>::iterator it = listamesaje.begin(); it != listamesaje.end(); it++){
-               //std::string cname = encryptMSG ((*it).getName(), receiver);
-               //std::string enc_comment = encryptMSG ((*it).getComment(), receiver);
-               //sendMsgToClient (cname, receiver, false);
-               //sendMsgToClient (enc_comment, receiver, true);
-               sendMsgToClient ((*it).getName(), receiver, false);
-               sendMsgToClient ((*it).getComment(), receiver, false);
+               std::string cname = encryptMSG ((*it).getName(), receiver);
+               std::string enc_comment = encryptMSG ((*it).getComment(), receiver);
+               sendMsgToClient (cname, receiver, false);
+               sleep(1);
+               sendMsgToClient (enc_comment, receiver, false);
+               sleep(1);
+               //sendMsgToClient ((*it).getName(), receiver, false);
+               //sendMsgToClient ((*it).getComment(), receiver, false);
         }
         
         return true;
@@ -178,10 +198,10 @@ CLIENT SERVER::exchangeCIandName (int sfd)
         std::string client_pk;
         std::string client_nonce;
         std::string client_name;
-        
+
         sendPK(sfd);
         sendNonce(sfd);
-        
+
         client_pk = recvPK(sfd);
         client_nonce =  recvNonce(sfd);
         
@@ -212,42 +232,36 @@ void SERVER::sendNonce (int sfd)
 
 std::string SERVER::recvPK (int sfd)
 {
-        std::string server_pk;
-        char buf[crypto_box_PUBLICKEYBYTES];
+        char buf[crypto_box_PUBLICKEYBYTES + 1];
         
-        memset (buf, 0, crypto_box_PUBLICKEYBYTES);
+        memset (buf, 0, crypto_box_PUBLICKEYBYTES+1);
         
         if(read (sfd, buf, crypto_box_PUBLICKEYBYTES) != crypto_box_PUBLICKEYBYTES){
                 perror ("read");
                 exit (EXIT_FAILURE);
         }
-        
-        server_pk = buf;
-        
+        std::string server_pk(buf,crypto_box_PUBLICKEYBYTES);
         return server_pk;
 }
 
 std::string SERVER::recvNonce (int sfd)
 {
-        std::string server_nonce;
-        char buf[crypto_box_NONCEBYTES];
+        char buf[crypto_box_NONCEBYTES + 1];
         
-        memset (buf, 0, crypto_box_NONCEBYTES);
+        memset (buf, 0, crypto_box_NONCEBYTES + 1);
         
         if(read (sfd, buf, crypto_box_NONCEBYTES) != crypto_box_NONCEBYTES){
                 perror ("read");
                 exit (EXIT_FAILURE);
         }
         
-        server_nonce = buf;
-        
+        std::string server_nonce(buf, crypto_box_NONCEBYTES);
         return server_nonce;
 }
 
 
 std::string SERVER::recvName (int sfd)
 {
-        std::string client_name;
         char buf[64];
         ssize_t br;
         
@@ -260,11 +274,9 @@ std::string SERVER::recvName (int sfd)
                 }
                
                 if(!br){}   // EOF
-                
-                client_name = buf;
-                
+                std::string name(buf,br);
                 mtxLock ();
-                if(verifyName (client_name)){
+                if(verifyName (name)){
                         // client name free for use
                         mtxUnlock ();
                         if(write (sfd, "Y", 1) != 1){
@@ -279,7 +291,7 @@ std::string SERVER::recvName (int sfd)
                         exit (EXIT_FAILURE);
                 }
         }
-        
+        std::string client_name(buf,br);
         return client_name;
 }
 
@@ -297,23 +309,30 @@ void client_Communication (SERVER *server_p, int sockfd)
        
         while (1){
                 char bufread[1024];
+                ssize_t br;
         
                 memset (bufread, 0, 1024);
                 
-                if(!read(sockfd, bufread, 1024)){
+                if((br = read (sockfd, bufread, 1024)) == -1){
+                        perror ("read");
+                        exit (EXIT_FAILURE);
+                }
+                if(!br){    // EOF
                         server_p->removeClient(client);
                         close (sockfd);
                         return;
                 }    // blocks until a message arrives
-                
-                std::string msg = bufread;
-                
-                //construct MESAJ object
+
+                std::string cmsg(bufread,br);
+
+                std::string msg = server_p->decryptMSG(cmsg, client);
+
+                //construct MESAJ object                
                 MESAJ mes(client.getNume(), msg);
                 
                 server_p->mtxLock();
                 server_p->addMessage(mes);  // add message to message list
-                server_p->sendMessage(msg, client); // send message to the other clients
+                server_p->sendMessage(cmsg, client); // send message to the other clients
                 server_p->mtxUnlock();        
         }
 }
