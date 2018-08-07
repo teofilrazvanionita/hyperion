@@ -114,10 +114,9 @@ bool SERVER::sendMessage (std::string &msg, CLIENT &sender)
 {
 	std::string m = decryptMSG (msg, sender);
 	for(std::list<CLIENT>::iterator it = listaclienti.begin(); it != listaclienti.end(); it++){
-		std::string c = encryptMSG (m, *it);
                 std::string cname = encryptMSG (sender.getNume(), *it);
                 sendMsgToClient (cname, *it, false);
-                sleep(1);
+		std::string c = encryptMSG (m, *it);
 		sendMsgToClient (c, *it, false);
                 //sendMsgToClient (sender.getNume(), *it, false);
                 //sendMsgToClient (msg, *it, false);
@@ -143,16 +142,20 @@ void SERVER::sendMsgToClient (std::string &msg, CLIENT &receiver, bool sendendl)
 
 bool SERVER::sendMessageList (CLIENT &receiver)
 {
+        std::string serialmesaj;
+        std::string c_serialmesaj;
+        
         for(std::list<MESAJ>::iterator it = listamesaje.begin(); it != listamesaje.end(); it++){
-               std::string cname = encryptMSG ((*it).getName(), receiver);
-               std::string enc_comment = encryptMSG ((*it).getComment(), receiver);
-               sendMsgToClient (cname, receiver, false);
-               sleep(1);
-               sendMsgToClient (enc_comment, receiver, false);
-               sleep(1);
-               //sendMsgToClient ((*it).getName(), receiver, false);
-               //sendMsgToClient ((*it).getComment(), receiver, false);
+               //std::string cname = encryptMSG ((*it).getName(), receiver);
+               //sendMsgToClient (cname, receiver, true);
+               //sleep(1);
+               //std::string enc_comment = encryptMSG ((*it).getComment(), receiver);
+               //sendMsgToClient (enc_comment, receiver, true);
+
+               serialmesaj += (*it).getName() + (*it).getComment();
         }
+        c_serialmesaj = encryptMSG(serialmesaj, receiver);
+        sendMsgToClient (c_serialmesaj, receiver, false);
         
         return true;
 }

@@ -116,7 +116,6 @@ void CLIENT::sendNonce ()
 
 std::string CLIENT::recvPK ()
 {
-        std::string server_pk;
         char buf[crypto_box_PUBLICKEYBYTES + 1];
         
         memset (buf, 0, crypto_box_PUBLICKEYBYTES + 1);
@@ -126,14 +125,13 @@ std::string CLIENT::recvPK ()
                 exit (EXIT_FAILURE);
         }
         
-        server_pk = buf;
+        std::string server_pk(buf, crypto_box_PUBLICKEYBYTES);
         
         return server_pk;
 }
 
 std::string CLIENT::recvNonce ()
 {
-        std::string server_nonce;
         char buf[crypto_box_NONCEBYTES + 1];
         
         memset (buf, 0, crypto_box_NONCEBYTES + 1);
@@ -143,10 +141,11 @@ std::string CLIENT::recvNonce ()
                 exit (EXIT_FAILURE);
         }
         
-        server_nonce = buf;
+        std::string server_nonce(buf, crypto_box_NONCEBYTES);
         
         return server_nonce;
 }
+
 
 int CLIENT::getSFD ()
 {
