@@ -240,8 +240,7 @@ std::string SERVER::recvPK (int sfd)
         memset (buf, 0, crypto_box_PUBLICKEYBYTES+1);
         
         if(read (sfd, buf, crypto_box_PUBLICKEYBYTES) != crypto_box_PUBLICKEYBYTES){
-                perror ("read");
-                exit (EXIT_FAILURE);
+            pthread_exit(NULL);
         }
         std::string server_pk(buf,crypto_box_PUBLICKEYBYTES);
         return server_pk;
@@ -254,8 +253,7 @@ std::string SERVER::recvNonce (int sfd)
         memset (buf, 0, crypto_box_NONCEBYTES + 1);
         
         if(read (sfd, buf, crypto_box_NONCEBYTES) != crypto_box_NONCEBYTES){
-                perror ("read");
-                exit (EXIT_FAILURE);
+            pthread_exit(NULL);
         }
         
         std::string server_nonce(buf, crypto_box_NONCEBYTES);
@@ -267,10 +265,10 @@ std::string SERVER::recvName (int sfd)
 {
         char buf[64];
         ssize_t br;
-        
-        while(1){
-                memset (buf, 0, 64);
-                
+               
+        memset (buf, 0, 64);
+
+        while(true){
                 if((br = read (sfd, buf, 64)) == -1){
                         perror ("read");
                         exit (EXIT_FAILURE);
@@ -294,9 +292,11 @@ std::string SERVER::recvName (int sfd)
                         exit (EXIT_FAILURE);
                 }
         }
+        
         std::string client_name(buf,br);
         return client_name;
 }
+
 
 // do all the communication with the clients in this thread function
 void client_Communication (SERVER *server_p, int sockfd)
