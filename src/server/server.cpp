@@ -80,6 +80,8 @@ std::string SERVER::decryptMSG (std::string &msg, CLIENT &sender)
         }
         catch(char const *e){
                 write (STDERR_FILENO, e, 256);
+                this->removeClient(sender);
+                pthread_exit(NULL);
         }
 	return m;
 }
@@ -106,6 +108,8 @@ std::string SERVER::encryptMSG (std::string &msg, CLIENT &receiver)
         }
         catch(char const *e){
                 write (STDERR_FILENO, e, 256);
+                this->removeClient(receiver);
+                pthread_exit(NULL);
         }
 	return c;
 }
