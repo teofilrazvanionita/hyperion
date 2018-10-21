@@ -12,10 +12,12 @@ else
     LIBDIRSUFFIX =
 endif
 
+objects = main,o server.o mesaj.o client.o crypto.o
+
 all : ${EXE}
 
-${EXE}: main.o server.o mesaj.o client.o crypto.o
-	${CPPC} main.o server.o mesaj.o client.o crypto.o /usr/lib${LIBDIRSUFFIX}/randombytes.o -o ${EXE} ${LDLIBS}
+${EXE}: $(objects)
+	${CPPC} $(objects) /usr/lib${LIBDIRSUFFIX}/randombytes.o -o ${EXE} ${LDLIBS}
 
 main.o: main.cpp ${HYPERION_INCL_DIR}/server/server.h
 	${CPPC} main.cpp ${CPPFLAGS} -I${HYPERION_INCL_DIR}/server -c -o $@
