@@ -12,7 +12,7 @@ else
     LIBDIRSUFFIX =
 endif
 
-objects = main,o server.o mesaj.o client.o crypto.o
+objects = main.o server.o mesaj.o client.o crypto.o
 
 all : ${EXE}
 
