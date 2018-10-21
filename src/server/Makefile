@@ -36,7 +36,7 @@ crypto.o: crypto.cpp ${HYPERION_INCL_DIR}/server/crypto.h
 
 
 clean : 
-	${RM} ${EXE} *.o *~
+	${RM} ${EXE} $(objects) *~
 
 showall :
 	@ echo ${EXE}

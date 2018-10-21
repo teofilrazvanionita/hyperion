@@ -32,7 +32,7 @@ crypto.o: crypto.cpp ${HYPERION_INCL_DIR}/client/crypto.h
 	${CPPC} crypto.cpp $(CPPFLAGS) -I${HYPERION_INCL_DIR}/client  -c -o $@
 
 clean : 
-	${RM} ${EXE} *.o *~
+	${RM} ${EXE} $(objects) *~
 
 showall :
 	@ echo ${EXE}
