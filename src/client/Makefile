@@ -29,12 +29,10 @@ client.o: client.cpp ${HYPERION_INCL_DIR}/client/client.h ${HYPERION_INCL_DIR}/c
 crypto.o: crypto.cpp ${HYPERION_INCL_DIR}/client/crypto.h
 	${CPPC} crypto.cpp $(CPPFLAGS) -I${HYPERION_INCL_DIR}/client  -c -o $@
 
-allgen : ${GEN_EXE}
-
 clean : 
 	${RM} ${EXE} *.o *~
 
 showall :
 	@ echo ${EXE}
 
-#${EXE} : ${LPLIB}		# True as a rough approximation
+
