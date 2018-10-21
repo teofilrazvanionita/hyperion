@@ -269,7 +269,9 @@ std::string SERVER::recvName (int sfd, CRYPTO &ci)
 {
         char buf[64];
         ssize_t br;
-               
+        
+        std::string name;
+        
         memset (buf, 0, 64);
 
         while(true){
@@ -279,7 +281,9 @@ std::string SERVER::recvName (int sfd, CRYPTO &ci)
                 }
                
                 if(!br){}   // EOF
-                std::string name(buf,br);
+                std::string enc_name(buf,br);
+                
+                name = this->decryptMSG(enc_name, ci.getPK(), ci.getNonce());
                 mtxLock ();
                 if(verifyName (name)){
                         // client name free for use
@@ -297,8 +301,7 @@ std::string SERVER::recvName (int sfd, CRYPTO &ci)
                 }
         }
         
-        std::string client_name(buf,br);
-        return client_name;
+        return name;
 }
 
 
