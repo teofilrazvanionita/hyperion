@@ -53,7 +53,7 @@ class SERVER {
                 void sendNonce (int sfd);
                 std::string recvPK (int sfd);
                 std::string recvNonce (int sfd);
-                std::string recvName (int sfd);
+                std::string recvName (int sfd, CRYPTO &ci);
 
 	private:
 		CRYPTO cryptinfo;

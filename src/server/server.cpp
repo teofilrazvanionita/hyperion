@@ -214,7 +214,7 @@ CLIENT SERVER::exchangeCIandName (int sfd)
         
         CRYPTO ci (client_pk, client_nonce);
         
-        client_name = recvName (sfd);
+        client_name = recvName (sfd, ci);
         
         CLIENT client (ci, sfd, client_name);
         
@@ -265,7 +265,7 @@ std::string SERVER::recvNonce (int sfd)
 }
 
 
-std::string SERVER::recvName (int sfd)
+std::string SERVER::recvName (int sfd, CRYPTO &ci)
 {
         char buf[64];
         ssize_t br;
