@@ -83,7 +83,7 @@ SERVER CLIENT::exchangeCIandName ()
                 
                 std::string enc_name = this->encryptMSG(name, server);
                 
-                if(write (sockfd, enc_name.c_str(),enc_name.size()) != name.size()){
+                if(write (sockfd, enc_name.c_str(), enc_name.size()) != enc_name.size()){
                         perror ("write");
                         exit (EXIT_FAILURE);
                 }
