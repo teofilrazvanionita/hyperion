@@ -34,7 +34,7 @@ client.o: client.cpp ${HYPERION_INCL_DIR}/server/client.h ${HYPERION_INCL_DIR}/s
 crypto.o: crypto.cpp ${HYPERION_INCL_DIR}/server/crypto.h
 	${CPPC} crypto.cpp $(CPPFLAGS) -I${HYPERION_INCL_DIR}/server  -c -o $@
 
-
+.PHONY : clean
 clean : 
 	${RM} ${EXE} $(objects) *~
 
