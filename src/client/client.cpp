@@ -56,6 +56,8 @@ SERVER CLIENT::exchangeCIandName ()
         
         server_pk = recvPK ();
         server_nonce =  recvNonce ();
+        CRYPTO cryptinfo (server_pk, server_nonce);
+        SERVER server (cryptinfo);
 
         sendPK();
         sendNonce();
@@ -78,7 +80,10 @@ SERVER CLIENT::exchangeCIandName ()
                 buf[br-1] = ':';
                 buf[br] = ' ';
                 std::string name(buf);
-                if(write (sockfd, name.c_str(),name.size()) != name.size()){
+                
+                std::string enc_name = this->encryptMSG(name, server);
+                
+                if(write (sockfd, enc_name.c_str(),enc_name.size()) != name.size()){
                         perror ("write");
                         exit (EXIT_FAILURE);
                 }
@@ -92,8 +97,6 @@ SERVER CLIENT::exchangeCIandName ()
                         name_verified = true;
         }
         
-        CRYPTO cryptinfo (server_pk, server_nonce);
-        SERVER server (cryptinfo);
         
         return server;
 }
