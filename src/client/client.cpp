@@ -38,7 +38,13 @@ CLIENT::~CLIENT ()
 void CLIENT::Play ()
 {
         server = exchangeCIandName ();
-
+        initscr();
+        read_win = newwin(LINES-2, COLS, 0, 0);
+        write_win = newwin(2, COLS, LINES-2, 0);
+        
+        wrefresh(read_win);
+        wrefresh(write_win);
+        
         std::thread (writeLoop, this).detach();
         
         std::thread (readLoop, this).detach();
@@ -186,11 +192,23 @@ std::string CLIENT::encryptMSG (std::string &msg, SERVER &receiver)
 	return c;
 }
 
+WINDOW * CLIENT::getReadWin ()
+{
+        return this->read_win;
+}
+
+WINDOW * CLIENT::getWriteWin ()
+{
+        return this->write_win;
+}
+
 void readLoop (CLIENT *client_p)
 {
         char buf[1024];
         ssize_t br;
         std::string m;
+        
+        scrollok(client_p->getReadWin(),TRUE);
         
         while(1){
                 memset (buf, 0, 1024);
@@ -205,23 +223,32 @@ void readLoop (CLIENT *client_p)
                 std::string c(buf,br);
 
                 m = client_p->decryptMSG(c, client_p->getServer());
-                
+                /*
                 if(write(STDOUT_FILENO, m.c_str(), m.size()) != m.size()){
                         perror ("write");
                         exit (EXIT_FAILURE);
-                }
+                }*/
+                waddstr(client_p->getReadWin(), m.c_str());
+                
+                wrefresh(client_p->getReadWin());
         }
 }
 
 void writeLoop (CLIENT *client_p)
 {
         char buf[1024];
-        ssize_t br;
+//        ssize_t br;
         std::string c, m;
+        char mesg[] = "Scrie ceva: ";
         
+        scrollok(client_p->getWriteWin(),TRUE);
+                
         while(1){
                 memset (buf, 0, 1024);
-    
+                
+                wprintw(client_p->getWriteWin(), "%s", mesg);
+                wgetstr(client_p->getWriteWin(),buf);
+                /*    
                 if((br = read (STDIN_FILENO, buf, 1024)) == -1){
                         perror ("read");
                         exit (EXIT_FAILURE);
@@ -230,14 +257,15 @@ void writeLoop (CLIENT *client_p)
                         //EOF
                         close (client_p->getSFD());
                         return;
-                }
+                }*/
                 m = buf;
+                m = m + "\n";
                 c = client_p->encryptMSG (m, client_p->getServer());
                 
                 if(write (client_p->getSFD(), c.c_str(), c.size()) != c.size()){
                         perror ("write");
                         exit (EXIT_FAILURE);
-                }
-                
+                }                
+                wrefresh(client_p->getWriteWin());
         }
 }

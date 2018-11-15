@@ -20,6 +20,7 @@ extern "C"
 #include <string.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <ncurses.h>
     
 #ifdef __cplusplus
 }
@@ -41,11 +42,15 @@ class CLIENT {
             std::string encryptMSG (std::string &msg, SERVER &receiver);
             std::string decryptMSG (std::string &msg, SERVER &sender);
             SERVER & getServer ();
+            WINDOW * getReadWin ();
+            WINDOW * getWriteWin ();
 	private:
             CRYPTO cryptinfo;
             int sockfd;
             SERVER server;
             bool name_verified;
+            WINDOW *read_win;
+            WINDOW *write_win;
 };
 
 

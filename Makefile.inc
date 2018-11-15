@@ -13,6 +13,6 @@ CPPFLAGS = -g \
 	   -Wextra \
     
 
-LDLIBS = -lnacl -lpthread
+LDLIBS = -lnacl -lpthread -lncurses
 
 RM = rm -f
